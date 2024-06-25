@@ -330,7 +330,7 @@ local textChanging = false
 local function onTextChanged()
 
 	if textChanging then return end
-	local maxLength = 40
+	local maxLength = 60
 
 	print(CommandText.Text)
 	textChanging = true
