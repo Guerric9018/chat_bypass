@@ -8,7 +8,8 @@ local UserInputService = game:GetService("UserInputService")
 
 local GUI = Instance.new("ScreenGui")
 GUI.Parent = game.CoreGui
-local UserInputService = game:GetService("UserInputService")
+GUI.IgnoreGuiInset = true
+GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling -- Add these lines
 
 local opened = false
 local numberCommands = 0
@@ -21,6 +22,7 @@ ScreenFrame.Size = UDim2.new(1, 0, 1, 0)
 ScreenFrame.BackgroundTransparency = 1
 ScreenFrame.Parent = GUI
 ScreenFrame.ZIndex = 1
+ScreenFrame.Active = false
 
 local BlurFrame = Instance.new("Frame")
 BlurFrame.Position = UDim2.new(0, 0, 0, 0)
@@ -30,6 +32,7 @@ BlurFrame.BackgroundTransparency = 0.5
 BlurFrame.BackgroundColor3 = Color3.new(0.184314, 0.184314, 0.184314)
 BlurFrame.Parent = GUI
 BlurFrame.ZIndex = 1
+BlurFrame.Active = false
 
 
 local SearchBar = Instance.new("Frame")
