@@ -282,7 +282,7 @@ ToggleButton.Size = UDim2.new(0, 100, 0, 50)
 ToggleButton.Position = UDim2.new(0, 10, 1, -60)
 ToggleButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 ToggleButton.TextColor3 = Color3.new(1, 1, 1)
-ToggleButton.Text = "Toggle GUI"
+ToggleButton.Text = "Toggle GUI\nPress INSERT"
 ToggleButton.Parent = GUI
 
 
