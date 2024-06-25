@@ -1,4 +1,10 @@
+-- Anti Chat Logger
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AnthonyIsntHere/anthonysrepository/main/scripts/AntiChatLogger.lua", true))()
+
 local UserInputService = game:GetService("UserInputService")
+
+-- GUI Init
 
 local GUI = Instance.new("ScreenGui")
 GUI.Parent = game.CoreGui
@@ -250,9 +256,6 @@ local function sendCommand(command)
 		label:Destroy()
 	end)
 end
-
--- Commands list
-
 
 
 local initialPadding = 10
