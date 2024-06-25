@@ -1,6 +1,3 @@
--- Anti Chat Logger
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/AnthonyIsntHere/anthonysrepository/main/scripts/AntiChatLogger.lua", true))()
 
 local UserInputService = game:GetService("UserInputService")
 
@@ -42,6 +39,7 @@ SearchBar.BackgroundTransparency = 0
 SearchBar.BackgroundColor3 = Color3.new(0.156863, 0.156863, 0.156863)
 SearchBar.Parent = GUI
 SearchBar.ZIndex = 4
+SearchBar.Active = false
 
 local SearchBarBG = Instance.new("Frame")
 SearchBarBG.Size = UDim2.new(0, 620, 0, 70)
@@ -53,6 +51,7 @@ local SearchBarBGCornerFrame = Instance.new("UICorner")
 SearchBarBGCornerFrame.CornerRadius = UDim.new(0.2, 0)
 SearchBarBGCornerFrame.Parent = SearchBarBG
 SearchBarBG.ZIndex = 3
+SearchBarBG.Active = false
 
 local CommandText = Instance.new("TextBox")
 CommandText.Size = UDim2.new(0.92, 0, 0.9, 0)
@@ -81,34 +80,6 @@ CommandLabel.Parent = SearchBar
 local blurEffect = Instance.new("BlurEffect")
 blurEffect.Size = 0
 blurEffect.Parent = game:GetService("Lighting")
-
--- Commands container builder
-
-local ListContainer = Instance.new("Frame") 
-ListContainer.Size = UDim2.new(0, 600, 0, 0)
-ListContainer.Position = UDim2.new(0.5, -300, 0.3, 50)
-ListContainer.BackgroundColor3 = Color3.new(0.137255, 0.137255, 0.137255)
-local ListContainerCornerFrame = Instance.new("UICorner")
-ListContainerCornerFrame.CornerRadius = UDim.new(0.2, 0)
-ListContainerCornerFrame.Parent = ListContainer
-ListContainer.UICorner.CornerRadius = UDim.new(0, 10)
-ListContainer.ZIndex = 2
-ListContainer.Parent = GUI
-
-local ScrollingFrame = Instance.new("ScrollingFrame")
-ScrollingFrame.Size = UDim2.new(1, -20, 1, -20)
-ScrollingFrame.Position = UDim2.new(0, 10, 0, 10)
-ScrollingFrame.BackgroundTransparency = 1
-ScrollingFrame.ZIndex = 3
-ScrollingFrame.CanvasSize = UDim2.new(1, -20, 1, -20)
-ScrollingFrame.ScrollBarImageColor3 = Color3.new(0.337255, 0.337255, 0.337255)
-ScrollingFrame.Parent = GUI
-
-function destroyContent()
-	for _, child in pairs(ScrollingFrame:GetChildren()) do
-		child:Destroy()
-	end
-end
 
 local animFramerate = 0.01
 local openingTime = 0.2
@@ -194,20 +165,11 @@ function Close()
 		SearchBar.Position = SearchBarFinalPos:Lerp(SearchBarInitPos,  (alpha*alpha))
 		SearchBarBG.Position = SearchBarBGFinalPos:Lerp(SearchBarBGInitPos, (alpha*alpha))
 
-		ListContainer.Size = ListContainer.Size:Lerp(UDim2.new(0, 0, 0, 0), alpha*alpha)
-		ListContainer.Position = ListContainer.Position:Lerp(UDim2.new(0.5, 0, 0.3, 50), alpha*alpha)
-		for _, child in pairs(ScrollingFrame:GetChildren()) do
-			child.Size = child.Size:Lerp(UDim2.new(1, 0, 0, 0), alpha*alpha)
-		end
-
 		wait(animFramerate)
 	end
 
 	SearchBar.Size = SearchBarInitSize
 	SearchBarBG.Size = SearchBarBGInitSize
-	ListContainer.Size = UDim2.new(0, 600, 0, 0)
-	ListContainer.Position = UDim2.new(0.5, -300, 0.3, 50)
-	destroyContent()
 
 	SearchBar.Position = SearchBarInitPos
 	SearchBarBG.Position = SearchBarBGInitPos
@@ -258,39 +220,6 @@ local function sendCommand(command)
 
 		label:Destroy()
 	end)
-end
-
-
-local initialPadding = 10
-local padding = 10
-local frameHeight = 80
-local transitionTime = 0.25
-
-local previousSize = 0
-
-local function animCommandsContainer(anim)
-	local offset = 0
-	if numberCommands == 0 then
-		offset = -2*initialPadding
-	end
-
-	if anim then
-		for i=0, transitionTime/animFramerate do
-			local alpha = i / (transitionTime / animFramerate)
-			if numberCommands == 0 then
-				offset = -2*initialPadding
-			end
-			if opened then
-				ListContainer.Size = ListContainer.Size:Lerp(UDim2.new(0, 600, 0, math.min(2*initialPadding + (frameHeight + padding) * numberCommands + offset, 300)), alpha*alpha)
-				ScrollingFrame.CanvasSize = ScrollingFrame.CanvasSize:Lerp(UDim2.new(1, -40, 0, -20+2*initialPadding + (frameHeight + padding) * numberCommands + offset), alpha*alpha)
-				wait(animFramerate)
-			end
-		end
-	end
-	ListContainer.Size = UDim2.new(0, 600, 0, math.min(2*initialPadding + (frameHeight + padding) * numberCommands + offset, 300))
-
-
-	ScrollingFrame.CanvasSize =UDim2.new(1, -40, 0, -20+2*initialPadding + (frameHeight + padding) * numberCommands + offset, 300)
 end
 
 
@@ -351,3 +280,7 @@ end
 
 CommandText.Changed:Connect(onTextChanged)
 Close()
+
+-- Anti Chat Logger
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AnthonyIsntHere/anthonysrepository/main/scripts/AntiChatLogger.lua", true))()
