@@ -222,39 +222,79 @@ local function sendCommand(command)
 	end)
 end
 
+function translate(text)
+    math.randomseed(os.time())
+    local obfuscatedText = ""
+    local unicodeChars = {
+
+    "\u{031D}", -- Combining up tack below
+    "\u{031E}", -- Combining down tack below
+    "\u{031F}", -- Combining plus sign below
+    "\u{0320}", -- Combining minus sign below
+    "\u{0321}", -- Combining palatalized hook below
+    "\u{0322}", -- Combining retroflex hook below
+    "\u{0323}", -- Combining dot below
+    "\u{0324}", -- Combining diaeresis below
+    "\u{0325}", -- Combining ring below
+    "\u{0326}", -- Combining comma below
+    "\u{0327}", -- Combining cedilla
+    "\u{0328}", -- Combining ogonek
+    "\u{0329}", -- Combining vertical line below
+    "\u{032A}", -- Combining bridge below
+    "\u{032B}", -- Combining inverted double arch below
+    "\u{032C}", -- Combining caron below
+    "\u{032D}", -- Combining circumflex accent below
+    "\u{032E}", -- Combining breve below
+    "\u{032F}", -- Combining inverted breve below
+    "\u{0330}", -- Combining tilde below
+
+    "\u{0339}", -- Combining right half ring below
+    "\u{033A}", -- Combining inverted bridge below
+    "\u{033B}", -- Combining square below
+    "\u{033C}", -- Combining seagull below
+    }
+    local charReplacements = {
+        ["o"] = "\u{043E}", -- Cyrillic 'o'
+        ["s"] = "\u{0455}", -- Latin 's' with hook
+        ["r"] = "\u{027E}", -- Weird r
+        ["i"] = "\u{0456}",
+        ["h"] = "ẖ",
+        ["a"] = "ɑ",
+        ["u"] = "ṷ",
+        ["c"] = "с",
+        ["g"] = "ɡ",
+        ["n"] = "ṇ",
+        ["e"] = "e",
+        ["t"] = "ṭ",
+        ["l"] = "ḻ",
+        ["d"] = "d",
+        ["k"] = "k",
+        ["w"] = "ẇ"
+    }
+
+    for i = 1, #text do
+        local char = text:sub(i, i)
+        if charReplacements[char] and math.random() < 1 then
+            obfuscatedText = obfuscatedText .. charReplacements[char]
+        else
+            obfuscatedText = obfuscatedText .. char
+        end
+
+        if math.random() < 1 then
+            obfuscatedText = unicodeChars[math.random(1, #unicodeChars)] .. obfuscatedText .. unicodeChars[math.random(1, #unicodeChars)].. unicodeChars[math.random(1, #unicodeChars)]
+        end
+
+    end
+
+    return obfuscatedText
+end
+
 
 local function onInputValidation(enterPressed)
 	if enterPressed then
-		sendCommand(CommandText.Text)
+		sendCommand(translate(CommandText.Text))
 		if opened then Close() end
 	end
-end
-
-local correspondances = {
-	["h"] = "ẖ",
-	["i"] = "ї",
-	["a"] = "ɑ",
-	["u"] = "ṷ",
-	["c"] = "с",
-	["g"] = "ɡ",
-	["n"] = "ṅ",
-	["e"] = "e",
-	["t"] = "ṭ",
-	["l"] = "ḻ",
-	["o"] = "ο",
-	["d"] = "d",
-	["s"] = "ṣ",
-	["k"] = "k",
-	["w"] = "ẇ"
-} 
-
-
-local function translate(m)
-	m = string.lower(m)
-	for i, j in pairs(correspondances) do
-		m = m:gsub(i, j)
-	end
-	return(m)
 end
 
 
@@ -264,14 +304,10 @@ local textChanging = false
 
 local function onTextChanged()
 
-	if textChanging then return end
 	local maxLength = 60
 
-	print(CommandText.Text)
 	textChanging = true
-	CommandText.Text = translate(CommandText.Text)
 	CommandText.CursorPosition = 100
-	textChanging = false
 	if #CommandText.Text > maxLength then
 		CommandText.Text = string.sub(CommandText.Text, 1, maxLength)
 	end
